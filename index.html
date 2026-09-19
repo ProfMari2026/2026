@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Faz a página se adaptar a celulares e tablets -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Missão Equilíbrio: O Segredo da Incógnita</title>
+
+    <style>
+        /* =========================================================
+           1. ESTILO GERAL DA PÁGINA
+           ========================================================= */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #222;
+            margin: 0;
+            padding: 20px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #555;
+        }
+
+        /* Caixa branca usada nas telas do jogo */
+        .cartao {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Classe utilizada para esconder elementos */
+        .escondido {
+            display: none;
+        }
+
+
+        /* =========================================================
+           2. TELA INICIAL
+           ========================================================= */
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        input {
+            width: 100px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .erro {
+            color: #b00020;
+            font-weight: bold;
+        }
+
+
+        /* =========================================================
+           3. PROGRESSO DA MISSÃO
+           ========================================================= */
+
+        .barra-externa {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .barra-interna {
+            width: 0%;
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.4s;
+        }
+
+        #textoProgresso {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+        /* =========================================================
+           4. EQUAÇÃO
+           ========================================================= */
+
+        .equacao {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #eef3f7;
+            border-radius: 8px;
+        }
+
+
+        /* =========================================================
+           5. BALANÇA
+           ========================================================= */
+
+        .balanca {
+            position: relative;
+            height: 280px;
+            margin-top: 20px;
+        }
+
+        /* Barra horizontal da balança */
+        #barraBalanca {
+            position: absolute;
+            width: 70%;
+            height: 8px;
+            background-color: #555;
+            left: 15%;
+            top: 90px;
+
+            /* A barra gira quando os dois lados ficam diferentes */
+            transform-origin: center;
+            transition: transform 0.5s;
+        }
+
+        /* Haste central */
+        .haste {
+            position: absolute;
+            width: 10px;
+            height: 130px;
+            background-color: #555;
+            left: calc(50% - 5px);
+            top: 90px;
+        }
+
+        /* Base da balança */
+        .base {
+            position: absolute;
+            width: 160px;
+            height: 12px;
+            background-color: #555;
+            left: calc(50% - 80px);
+            top: 215px;
+        }
+
+        /* Os dois pratos */
+        .prato {
+            position: absolute;
+            width: 38%;
+            min-height: 90px;
+            border: 3px solid #555;
+            border-radius: 10px;
+            background-color: #fafafa;
+            top: 115px;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            transition: transform 0.5s;
+        }
+
+        #pratoEsquerdo {
+            left: 3%;
+        }
+
+        #pratoDireito {
+            right: 3%;
+        }
+
+        .titulo-prato {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+
+        /* =========================================================
+           6. OBJETOS QUE REPRESENTAM A EQUAÇÃO
+           ========================================================= */
+
+        /* Caixa que representa a incógnita x */
+        .caixa-x {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 3px;
+            background-color: #444;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Unidade positiva */
+        .positivo {
+            display: inline-block;
+            padding: 7px;
+            margin: 2px;
+            border: 2px solid #287a38;
+            border-radius: 50%;
+            color: #287a38;
+            font-weight: bold;
+        }
+
+        /* Unidade negativa */
+        .negativo {
+            display: inline-block;
+            padding: 7px;
+            margin: 2px;
+            border: 2px solid #a52a2a;
+            border-radius: 50%;
+            color: #a52a2a;
+            font-weight: bold;
+        }
+
+
+        /* =========================================================
+           7. PAINEL DE CONTROLES
+           ========================================================= */
+
+        .controles {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .botoes-lados {
+            margin-top: 10px;
+        }
+
+        .acoes-secundarias {
+            margin-top: 15px;
+        }
+
+
+        /* =========================================================
+           8. FEEDBACK
+           ========================================================= */
+
+        #feedback {
+            min-height: 50px;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #fff8dc;
+            border: 1px solid #d8c78e;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+
+        /* =========================================================
+           9. AJUSTES PARA CELULAR
+           ========================================================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .equacao {
+                font-size: 24px;
+            }
+
+            .prato {
+                width: 44%;
+            }
+
+            #pratoEsquerdo {
+                left: 1%;
+            }
+
+            #pratoDireito {
+                right: 1%;
+            }
+
+            button {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<main>
+
+    <h1>Missão Equilíbrio</h1>
+    <p class="subtitulo">O Segredo da Incógnita</p>
+
+
+    <!-- =========================================================
+         TELA 1 - APRESENTAÇÃO
+         ========================================================= -->
+
+    <section id="telaInicial" class="cartao">
+
+        <h2>Alerta no Núcleo de Equilíbrio</h2>
+
+        <p>
+            Diversas equações ficaram instáveis.
+            Sua missão é descobrir o valor da incógnita
+            sem romper o equilíbrio.
+        </p>
+
+        <p>
+            <strong>Regra fundamental:</strong>
+            uma igualdade só permanece equilibrada quando
+            as operações realizadas preservam os dois lados.
+        </p>
+
+        <label for="codigoAluno">
+            Digite seu código de participante:
+        </label>
+
+        <!-- Recomenda-se utilizar um código, e não o nome do aluno -->
+        <input
+            type="text"
+            id="codigoAluno"
+            maxlength="20"
+            placeholder="Ex.: A07"
+        >
+
+        <button id="botaoIniciar">
+            Iniciar missão
+        </button>
+
+        <p id="erroInicial" class="erro"></p>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         TELA 2 - JOGO
+         ========================================================= -->
+
+    <section id="telaJogo" class="cartao escondido">
+
+        <!-- Progresso -->
+        <div class="barra-externa">
+            <div id="barraProgresso" class="barra-interna"></div>
+        </div>
+
+        <p id="textoProgresso"></p>
+
+
+        <!-- Identificação do desafio -->
+        <h2 id="tituloDesafio"></h2>
+
+        <p id="instrucaoDesafio"></p>
+
+
+        <!-- A equação muda conforme o aluno realiza operações -->
+        <div id="equacaoAtual" class="equacao"></div>
+
+
+        <!-- =====================================================
+             REPRESENTAÇÃO VISUAL DA BALANÇA
+             ===================================================== -->
+
+        <div class="balanca">
+
+            <div id="barraBalanca"></div>
+
+            <div class="haste"></div>
+            <div class="base"></div>
+
+
+            <!-- Prato esquerdo -->
+            <div id="pratoEsquerdo" class="prato">
+
+                <div class="titulo-prato">
+                    Lado esquerdo
+                </div>
+
+                <div id="objetosEsquerda"></div>
+
+                <p id="textoEsquerda"></p>
+
+            </div>
+
+
+            <!-- Prato direito -->
+            <div id="pratoDireito" class="prato">
+
+                <div class="titulo-prato">
+                    Lado direito
+                </div>
+
+                <div id="objetosDireita"></div>
+
+                <p id="textoDireita"></p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             CONTROLES
+             ===================================================== -->
+
+        <div class="controles">
+
+            <label for="operacao">
+                O que deseja fazer?
+            </label>
+
+            <select id="operacao">
+                <option value="retirar">Retirar</option>
+                <option value="adicionar">Adicionar</option>
+            </select>
+
+
+            <label for="quantidade">
+                Quantidade:
+            </label>
+
+            <input
+                id="quantidade"
+                type="number"
+                min="1"
+                max="20"
+                value="1"
+            >
+
+
+            <div class="botoes-lados">
+
+                <button
+                    id="botaoEsquerda"
+                    type="button"
+                >
+                    Aplicar no lado esquerdo
+                </button>
+
+                <button
+                    id="botaoDireita"
+                    type="button"
+                >
+                    Aplicar no lado direito
+                </button>
+
+            </div>
+
+
+            <div class="acoes-secundarias">
+
+                <button id="botaoDesfazer" type="button">
+                    Desfazer
+                </button>
+
+                <button id="botaoPista" type="button">
+                    Pedir pista
+                </button>
+
+                <button id="botaoReiniciar" type="button">
+                    Reiniciar desafio
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mensagens pedagógicas -->
+        <div
+            id="feedback"
+            aria-live="polite"
+        >
+            Descubra como deixar a incógnita sozinha
+            sem perder o equilíbrio.
+        </div>
+
+
+        <!-- Só aparece quando o desafio é resolvido -->
+        <div style="text-align:center; margin-top:20px;">
+
+            <button
+                id="botaoProximo"
+                type="button"
+                class="escondido"
+            >
+                Próximo desafio
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         TELA 3 - FINAL
+         ========================================================= -->
+
+    <section id="telaFinal" class="cartao escondido">
+
+        <h2>Missão concluída!</h2>
+
+        <p>
+            Você restaurou todos os setores do
+            Núcleo de Equilíbrio.
+        </p>
+
+        <p>
+            <strong>
+                Regra descoberta:
+            </strong>
+        </p>
+
+        <p>
+            Uma igualdade permanece verdadeira quando
+            realizamos operações equivalentes nos dois lados.
+        </p>
+
+        <p id="resumoFinal"></p>
+
+
+        <!-- O arquivo será produzido apenas no computador local -->
+        <button id="botaoBaixar">
+            Baixar registro da missão (.csv)
+        </button>
+
+    </section>
+
+</main>
+
+
+
+<script>
+
+    /* =============================================================
+       1. DESAFIOS DA FASE 1
+
+       Cada desafio possui uma equação:
+
+           x + a = b
+
+       O valor de x é calculado automaticamente:
+
+           x = b - a
+       ============================================================= */
+
+    const desafios = [
+
+        {
+            titulo: "Setor 1 - Primeiro equilíbrio",
+            a: 3,
+            b: 8
+        },
+
+        {
+            titulo: "Setor 2 - Nova instabilidade",
+            a: 7,
+            b: 12
+        },
+
+        {
+            titulo: "Setor 3 - Energia negativa",
+            a: -4,
+            b: 6
+        },
+
+        {
+            titulo: "Setor 4 - Desafio final",
+            a: -8,
+            b: 5
+        }
+
+    ];
+
+
+
+    /* =============================================================
+       2. VARIÁVEIS PRINCIPAIS DO JOGO
+       ============================================================= */
+
+    let indiceDesafio = 0;
+
+    let codigoAluno = "";
+
+    let inicioSessao = 0;
+
+    let inicioDesafio = 0;
+
+    let numeroPistas = 0;
+
+    let resolvido = false;
+
+
+    /*
+       Cada lado da equação é representado por:
+
+       x = quantidade de incógnitas
+       constante = número que acompanha a incógnita
+
+       Exemplo:
+
+       x + 3
+
+       fica:
+
+       {
+           x: 1,
+           constante: 3
+       }
+    */
+
+    let esquerda;
+    let direita;
+
+
+    /*
+       Histórico utilizado pelo botão "Desfazer"
+    */
+
+    let historico = [];
+
+
+    /*
+       Todos os acontecimentos da partida serão
+       guardados neste vetor.
+    */
+
+    let registros = [];
+
+
+
+    /* =============================================================
+       3. PEGAMOS OS ELEMENTOS DA PÁGINA
+       ============================================================= */
+
+    const telaInicial = document.getElementById("telaInicial");
+    const telaJogo = document.getElementById("telaJogo");
+    const telaFinal = document.getElementById("telaFinal");
+
+    const codigoAlunoInput = document.getElementById("codigoAluno");
+
+    const equacaoAtual = document.getElementById("equacaoAtual");
+
+    const objetosEsquerda =
+        document.getElementById("objetosEsquerda");
+
+    const objetosDireita =
+        document.getElementById("objetosDireita");
+
+    const textoEsquerda =
+        document.getElementById("textoEsquerda");
+
+    const textoDireita =
+        document.getElementById("textoDireita");
+
+    const feedback =
+        document.getElementById("feedback");
+
+    const barraBalanca =
+        document.getElementById("barraBalanca");
+
+    const pratoEsquerdo =
+        document.getElementById("pratoEsquerdo");
+
+    const pratoDireito =
+        document.getElementById("pratoDireito");
+
+
+
+    /* =============================================================
+       4. INICIAR O JOGO
+       ============================================================= */
+
+    document
+        .getElementById("botaoIniciar")
+        .addEventListener("click", iniciarJogo);
+
+
+    function iniciarJogo() {
+
+        codigoAluno = codigoAlunoInput.value.trim();
+
+        /*
+           Não usamos nome do aluno.
+           Pedimos apenas um código anônimo.
+        */
+
+        if (codigoAluno === "") {
+
+            document.getElementById("erroInicial").textContent =
+                "Digite um código para iniciar.";
+
+            return;
+        }
+
+        document.getElementById("erroInicial").textContent = "";
+
+        inicioSessao = Date.now();
+
+        registros = [];
+
+        registrarEvento("INICIO_DA_SESSAO");
+
+        indiceDesafio = 0;
+
+        telaInicial.classList.add("escondido");
+
+        telaJogo.classList.remove("escondido");
+
+        carregarDesafio();
+    }
+
+
+
+    /* =============================================================
+       5. CARREGAR UM DESAFIO
+       ============================================================= */
+
+    function carregarDesafio() {
+
+        const desafio = desafios[indiceDesafio];
+
+        /*
+           Criamos a equação:
+
+           x + a = b
+        */
+
+        esquerda = {
+            x: 1,
+            constante: desafio.a
+        };
+
+        direita = {
+            x: 0,
+            constante: desafio.b
+        };
+
+
+        historico = [];
+
+        numeroPistas = 0;
+
+        resolvido = false;
+
+        inicioDesafio = Date.now();
+
+
+        document
+            .getElementById("tituloDesafio")
+            .textContent = desafio.titulo;
+
+
+        document
+            .getElementById("instrucaoDesafio")
+            .textContent =
+            "Isole a incógnita x mantendo o equilíbrio.";
+
+
+        document
+            .getElementById("botaoProximo")
+            .classList.add("escondido");
+
+
+        registrarEvento("INICIO_DO_DESAFIO");
+
+
+        atualizarTela();
+    }
+
+
+
+    /* =============================================================
+       6. ESCREVER EXPRESSÕES ALGÉBRICAS
+
+       Exemplos:
+
+       x + 3
+       x - 4
+       x
+       7
+       ============================================================= */
+
+    function escreverExpressao(lado) {
+
+        if (lado.x === 1) {
+
+            if (lado.constante > 0) {
+                return "x + " + lado.constante;
+            }
+
+            if (lado.constante < 0) {
+                return "x - " + Math.abs(lado.constante);
+            }
+
+            return "x";
+        }
+
+        return String(lado.constante);
+    }
+
+
+
+    /* =============================================================
+       7. CALCULAR O VALOR VERDADEIRO DE x
+
+       Como nossos desafios são:
+
+       x + a = b
+
+       então:
+
+       x = b - a
+       ============================================================= */
+
+    function obterSolucao() {
+
+        const desafio = desafios[indiceDesafio];
+
+        return desafio.b - desafio.a;
+    }
+
+
+
+    /* =============================================================
+       8. CALCULAR O "PESO" DE CADA LADO
+
+       O jogo conhece o valor correto de x,
+       mas não o mostra ao estudante.
+
+       Esse valor é usado somente para saber
+       se a balança deve ficar equilibrada.
+       ============================================================= */
+
+    function valorDoLado(lado) {
+
+        const x = obterSolucao();
+
+        return lado.x * x + lado.constante;
+    }
+
+
+
+    /* =============================================================
+       9. VERIFICAR SE A BALANÇA ESTÁ EQUILIBRADA
+       ============================================================= */
+
+    function estaEquilibrada() {
+
+        return valorDoLado(esquerda) === valorDoLado(direita);
+    }
+
+
+
+    /* =============================================================
+       10. VERIFICAR SE O DESAFIO FOI RESOLVIDO
+
+       Consideramos resolvido quando:
+
+       - a balança está equilibrada;
+       - x ficou sozinho do lado esquerdo.
+       ============================================================= */
+
+    function desafioResolvido() {
+
+        return (
+            estaEquilibrada() &&
+            esquerda.x === 1 &&
+            esquerda.constante === 0
+        );
+    }
+
+
+
+    /* =============================================================
+       11. MOSTRAR OS OBJETOS NOS PRATOS
+       ============================================================= */
+
+    function desenharObjetos(lado, elementoHTML) {
+
+        elementoHTML.innerHTML = "";
+
+
+        /*
+           Se houver uma incógnita,
+           desenhamos a caixa x.
+        */
+
+        if (lado.x === 1) {
+
+            const caixa = document.createElement("span");
+
+            caixa.className = "caixa-x";
+
+            caixa.textContent = "x";
+
+            elementoHTML.appendChild(caixa);
+        }
+
+
+        /*
+           Desenhamos unidades positivas ou negativas.
+
+           Limitamos visualmente a 12 unidades
+           para a tela não ficar cheia demais.
+        */
+
+        const quantidade =
+            Math.min(Math.abs(lado.constante), 12);
+
+
+        for (let i = 0; i < quantidade; i++) {
+
+            const unidade = document.createElement("span");
+
+            if (lado.constante > 0) {
+
+                unidade.className = "positivo";
+                unidade.textContent = "+1";
+
+            } else {
+
+                unidade.className = "negativo";
+                unidade.textContent = "-1";
+            }
+
+            elementoHTML.appendChild(unidade);
+        }
+
+
+        /*
+           Se houver mais de 12 unidades,
+           mostramos também o número total.
+        */
+
+        if (Math.abs(lado.constante) > 12) {
+
+            const texto = document.createElement("span");
+
+            texto.textContent =
+                " (" + lado.constante + ")";
+
+            elementoHTML.appendChild(texto);
+        }
+    }
+
+
+
+    /* =============================================================
+       12. ATUALIZAR TODA A TELA
+       ============================================================= */
+
+    function atualizarTela() {
+
+        const equilibrio = estaEquilibrada();
+
+
+        /*
+           EQUAÇÃO "VIVA"
+        */
+
+        equacaoAtual.textContent =
+            escreverExpressao(esquerda) +
+            (equilibrio ? " = " : " ≠ ") +
+            escreverExpressao(direita);
+
+
+        /*
+           OBJETOS
+        */
+
+        desenharObjetos(
+            esquerda,
+            objetosEsquerda
+        );
+
+        desenharObjetos(
+            direita,
+            objetosDireita
+        );
+
+
+        textoEsquerda.textContent =
+            escreverExpressao(esquerda);
+
+        textoDireita.textContent =
+            escreverExpressao(direita);
+
+
+        atualizarBalanca();
+
+        atualizarProgresso();
+    }
+
+
+
+    /* =============================================================
+       13. INCLINAR A BALANÇA
+
+       Se o lado esquerdo estiver "mais pesado",
+       ele desce.
+
+       Se o direito estiver mais pesado,
+       ele desce.
+       ============================================================= */
+
+    function atualizarBalanca() {
+
+        const valorEsquerda =
+            valorDoLado(esquerda);
+
+        const valorDireita =
+            valorDoLado(direita);
+
+
+        const diferenca =
+            valorDireita - valorEsquerda;
+
+
+        /*
+           Limitamos a inclinação a 8 graus.
+        */
+
+        let angulo = diferenca * 2;
+
+        if (angulo > 8) {
+            angulo = 8;
+        }
+
+        if (angulo < -8) {
+            angulo = -8;
+        }
+
+
+        barraBalanca.style.transform =
+            "rotate(" + angulo + "deg)";
+
+
+        /*
+           Os pratos também sobem ou descem
+           um pouco para reforçar o efeito visual.
+        */
+
+        pratoEsquerdo.style.transform =
+            "translateY(" + (-angulo * 1.5) + "px)";
+
+        pratoDireito.style.transform =
+            "translateY(" + (angulo * 1.5) + "px)";
+    }
+
+
+
+    /* =============================================================
+       14. APLICAR UMA OPERAÇÃO
+       ============================================================= */
+
+    function aplicarOperacao(ladoEscolhido) {
+
+        if (resolvido) {
+            return;
+        }
+
+
+        const operacao =
+            document.getElementById("operacao").value;
+
+
+        const quantidade =
+            Number(
+                document.getElementById("quantidade").value
+            );
+
+
+        /*
+           Verificação simples da quantidade digitada.
+        */
+
+        if (
+            !Number.isInteger(quantidade) ||
+            quantidade < 1 ||
+            quantidade > 20
+        ) {
+
+            feedback.textContent =
+                "Escolha uma quantidade inteira entre 1 e 20.";
+
+            return;
+        }
+
+
+        /*
+           Salvamos o estado antes da mudança.
+           Isso permite usar o botão "Desfazer".
+        */
+
+        historico.push({
+
+            esquerda: {
+                ...esquerda
+            },
+
+            direita: {
+                ...direita
+            }
+
+        });
+
+
+        /*
+           Adicionar significa + quantidade.
+
+           Retirar significa - quantidade.
+        */
+
+        let alteracao;
+
+        if (operacao === "adicionar") {
+
+            alteracao = quantidade;
+
+        } else {
+
+            alteracao = -quantidade;
+        }
+
+
+        /*
+           Aplicamos a mudança no lado escolhido.
+        */
+
+        if (ladoEscolhido === "esquerdo") {
+
+            esquerda.constante += alteracao;
+
+        } else {
+
+            direita.constante += alteracao;
+        }
+
+
+        /*
+           Registramos o que o estudante fez.
+        */
+
+        registrarEvento(
+            "OPERACAO",
+            {
+                lado: ladoEscolhido,
+                operacao: operacao,
+                quantidade: quantidade
+            }
+        );
+
+
+        atualizarTela();
+
+
+        /*
+           Agora fornecemos o feedback.
+        */
+
+        if (desafioResolvido()) {
+
+            resolvido = true;
+
+            const solucao = obterSolucao();
+
+            feedback.textContent =
+                "Equilíbrio restaurado! " +
+                "A incógnita foi isolada: x = " +
+                solucao + ".";
+
+
+            registrarEvento(
+                "DESAFIO_CONCLUIDO"
+            );
+
+
+            document
+                .getElementById("botaoProximo")
+                .classList.remove("escondido");
+
+
+            atualizarProgresso(true);
+
+        }
+        else if (estaEquilibrada()) {
+
+            feedback.textContent =
+                "O equilíbrio foi mantido. " +
+                "Continue até deixar x sozinho.";
+
+        }
+        else {
+
+            feedback.textContent =
+                "O equilíbrio foi perdido. " +
+                "Você modificou apenas um dos lados. " +
+                "O que pode fazer para recuperar a igualdade?";
+        }
+    }
+
+
+
+    /* =============================================================
+       15. BOTÕES DOS DOIS LADOS
+       ============================================================= */
+
+    document
+        .getElementById("botaoEsquerda")
+        .addEventListener(
+            "click",
+            function () {
+                aplicarOperacao("esquerdo");
+            }
+        );
+
+
+    document
+        .getElementById("botaoDireita")
+        .addEventListener(
+            "click",
+            function () {
+                aplicarOperacao("direito");
+            }
+        );
+
+
+
+    /* =============================================================
+       16. DESFAZER
+       ============================================================= */
+
+    document
+        .getElementById("botaoDesfazer")
+        .addEventListener(
+            "click",
+            desfazer
+        );
+
+
+    function desfazer() {
+
+        if (historico.length === 0) {
+
+            feedback.textContent =
+                "Ainda não há nenhuma ação para desfazer.";
+
+            return;
+        }
+
+
+        const estadoAnterior =
+            historico.pop();
+
+
+        esquerda =
+            estadoAnterior.esquerda;
+
+        direita =
+            estadoAnterior.direita;
+
+
+        resolvido = false;
+
+
+        document
+            .getElementById("botaoProximo")
+            .classList.add("escondido");
+
+
+        registrarEvento("DESFAZER");
+
+
+        feedback.textContent =
+            "A última ação foi desfeita.";
+
+
+        atualizarTela();
+    }
+
+
+
+    /* =============================================================
+       17. PISTAS
+
+       As pistas procuram orientar,
+       mas não fornecem imediatamente a resposta.
+       ============================================================= */
+
+    document
+        .getElementById("botaoPista")
+        .addEventListener(
+            "click",
+            mostrarPista
+        );
+
+
+    function mostrarPista() {
+
+        numeroPistas++;
+
+
+        registrarEvento(
+            "PISTA",
+            {
+                numeroPista: numeroPistas
+            }
+        );
+
+
+        /*
+           Primeira pista: princípio geral
+        */
+
+        if (numeroPistas === 1) {
+
+            feedback.textContent =
+                "Observe o termo que acompanha x. " +
+                "Qual operação poderia desfazê-lo?";
+
+            return;
+        }
+
+
+        /*
+           Segunda pista: considera o estado atual.
+        */
+
+        if (esquerda.constante > 0) {
+
+            feedback.textContent =
+                "Para deixar x sozinho, tente retirar " +
+                esquerda.constante +
+                " do lado esquerdo.";
+
+        }
+        else if (esquerda.constante < 0) {
+
+            feedback.textContent =
+                "Para deixar x sozinho, tente adicionar " +
+                Math.abs(esquerda.constante) +
+                " ao lado esquerdo.";
+
+        }
+        else {
+
+            feedback.textContent =
+                "x já está sozinho no lado esquerdo. " +
+                "Agora pense nas operações realizadas " +
+                "e recupere o equilíbrio do outro lado.";
+        }
+
+
+        /*
+           A partir da terceira pista,
+           reforçamos explicitamente a propriedade
+           da igualdade.
+        */
+
+        if (numeroPistas >= 3) {
+
+            feedback.textContent +=
+                " Lembre-se: para preservar a igualdade, " +
+                "a mesma operação deve ser realizada " +
+                "nos dois lados.";
+        }
+    }
+
+
+
+    /* =============================================================
+       18. REINICIAR O DESAFIO
+       ============================================================= */
+
+    document
+        .getElementById("botaoReiniciar")
+        .addEventListener(
+            "click",
+            function () {
+
+                registrarEvento(
+                    "REINICIO_DO_DESAFIO"
+                );
+
+                carregarDesafio();
+
+                feedback.textContent =
+                    "Desafio reiniciado.";
+            }
+        );
+
+
+
+    /* =============================================================
+       19. PRÓXIMO DESAFIO
+       ============================================================= */
+
+    document
+        .getElementById("botaoProximo")
+        .addEventListener(
+            "click",
+            proximoDesafio
+        );
+
+
+    function proximoDesafio() {
+
+        indiceDesafio++;
+
+
+        /*
+           Se já completamos todos,
+           encerramos o jogo.
+        */
+
+        if (indiceDesafio >= desafios.length) {
+
+            finalizarJogo();
+
+            return;
+        }
+
+
+        carregarDesafio();
+
+
+        feedback.textContent =
+            "Novo setor detectado. " +
+            "Restaure o equilíbrio.";
+    }
+
+
+
+    /* =============================================================
+       20. PROGRESSO
+       ============================================================= */
+
+    function atualizarProgresso(
+        desafioAcabou = false
+    ) {
+
+        let concluidos = indiceDesafio;
+
+        if (desafioAcabou) {
+            concluidos++;
+        }
+
+
+        const percentual =
+            (concluidos / desafios.length) * 100;
+
+
+        document
+            .getElementById("barraProgresso")
+            .style.width =
+            percentual + "%";
+
+
+        document
+            .getElementById("textoProgresso")
+            .textContent =
+            "Núcleo estabilizado: " +
+            Math.round(percentual) +
+            "%";
+    }
+
+
+
+    /* =============================================================
+       21. REGISTRO DOS EVENTOS
+
+       Cada ação do aluno gera um registro.
+
+       Esses dados poderão ser analisados
+       posteriormente pelo grupo do PI.
+       ============================================================= */
+
+    function registrarEvento(
+        tipo,
+        dadosExtras = {}
+    ) {
+
+        const agora = Date.now();
+
+
+        const registro = {
+
+            codigo: codigoAluno,
+
+            dataHora:
+                new Date().toISOString(),
+
+            segundosDesdeInicio:
+                inicioSessao
+                    ? (
+                        (agora - inicioSessao) / 1000
+                      ).toFixed(1)
+                    : "",
+
+            desafio:
+                indiceDesafio + 1,
+
+            evento:
+                tipo,
+
+            lado:
+                dadosExtras.lado || "",
+
+            operacao:
+                dadosExtras.operacao || "",
+
+            quantidade:
+                dadosExtras.quantidade || "",
+
+            numeroPista:
+                dadosExtras.numeroPista || "",
+
+            esquerda:
+                esquerda
+                    ? escreverExpressao(esquerda)
+                    : "",
+
+            direita:
+                direita
+                    ? escreverExpressao(direita)
+                    : "",
+
+            equilibrada:
+                esquerda && direita
+                    ? estaEquilibrada()
+                    : ""
+
+        };
+
+
+        registros.push(registro);
+    }
+
+
+
+    /* =============================================================
+       22. FINALIZAR O JOGO
+       ============================================================= */
+
+    function finalizarJogo() {
+
+        registrarEvento(
+            "FIM_DA_SESSAO"
+        );
+
+
+        telaJogo.classList.add(
+            "escondido"
+        );
+
+        telaFinal.classList.remove(
+            "escondido"
+        );
+
+
+        const tempoTotal =
+            Math.round(
+                (Date.now() - inicioSessao) /
+                1000
+            );
+
+
+        document
+            .getElementById("resumoFinal")
+            .textContent =
+            "Tempo total aproximado: " +
+            tempoTotal +
+            " segundos.";
+    }
+
+
+
+    /* =============================================================
+       23. BAIXAR OS REGISTROS EM CSV
+
+       O arquivo é produzido localmente.
+       Nenhum dado é enviado para a internet.
+       ============================================================= */
+
+    document
+        .getElementById("botaoBaixar")
+        .addEventListener(
+            "click",
+            baixarRegistros
+        );
+
+
+    function baixarRegistros() {
+
+        /*
+           Cabeçalho das colunas.
+           Usamos ponto e vírgula,
+           que costuma funcionar bem no Excel
+           configurado em português.
+        */
+
+        let csv =
+            "codigo;" +
+            "dataHora;" +
+            "segundosDesdeInicio;" +
+            "desafio;" +
+            "evento;" +
+            "lado;" +
+            "operacao;" +
+            "quantidade;" +
+            "numeroPista;" +
+            "esquerda;" +
+            "direita;" +
+            "equilibrada\n";
+
+
+        registros.forEach(
+            function (r) {
+
+                csv +=
+                    r.codigo + ";" +
+                    r.dataHora + ";" +
+                    r.segundosDesdeInicio + ";" +
+                    r.desafio + ";" +
+                    r.evento + ";" +
+                    r.lado + ";" +
+                    r.operacao + ";" +
+                    r.quantidade + ";" +
+                    r.numeroPista + ";" +
+                    r.esquerda + ";" +
+                    r.direita + ";" +
+                    r.equilibrada +
+                    "\n";
+            }
+        );
+
+
+        /*
+           Criamos o arquivo dentro do navegador.
+        */
+
+        const arquivo =
+            new Blob(
+                [csv],
+                {
+                    type:
+                        "text/csv;charset=utf-8"
+                }
+            );
+
+
+        const endereco =
+            URL.createObjectURL(arquivo);
+
+
+        const link =
+            document.createElement("a");
+
+
+        /*
+           Retiramos caracteres estranhos
+           do código antes de usá-lo
+           no nome do arquivo.
+        */
+
+        const codigoSeguro =
+            codigoAluno.replace(
+                /[^a-zA-Z0-9_-]/g,
+                "_"
+            );
+
+
+        link.href = endereco;
+
+        link.download =
+            "missao_equilibrio_" +
+            codigoSeguro +
+            ".csv";
+
+
+        link.click();
+
+
+        URL.revokeObjectURL(
+            endereco
+        );
+    }
+
+</script>
+
+</body>
+</html>
