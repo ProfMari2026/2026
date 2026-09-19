@@ -9,8 +9,9 @@
     <title>Missão Equilíbrio: O Segredo da Incógnita</title>
 
     <style>
+
         /* =========================================================
-           1. ESTILO GERAL DA PÁGINA
+           1. ESTILO GERAL
            ========================================================= */
 
         body {
@@ -82,39 +83,14 @@
 
 
         /* =========================================================
-           3. PROGRESSO DA MISSÃO
-           ========================================================= */
-
-        .barra-externa {
-            width: 100%;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .barra-interna {
-            width: 0%;
-            height: 100%;
-            background-color: #4caf50;
-            transition: width 0.4s;
-        }
-
-        #textoProgresso {
-            text-align: center;
-            margin-top: 5px;
-        }
-
-
-        /* =========================================================
-           4. EQUAÇÃO
+           3. EQUAÇÃO
            ========================================================= */
 
         .equacao {
             text-align: center;
             font-size: 30px;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 20px 0 5px 0;
             padding: 15px;
             background-color: #eef3f7;
             border-radius: 8px;
@@ -122,53 +98,57 @@
 
 
         /* =========================================================
-           5. BALANÇA
+           4. BALANÇA
            ========================================================= */
 
         .balanca {
             position: relative;
             height: 280px;
-            margin-top: 20px;
+            margin-top: 5px;
         }
 
+        /* Barra horizontal da balança */
         #barraBalanca {
             position: absolute;
             width: 70%;
             height: 8px;
             background-color: #555;
             left: 15%;
-            top: 90px;
+            top: 60px;
 
             transform-origin: center;
             transition: transform 0.5s;
         }
 
+        /* Haste central */
         .haste {
             position: absolute;
             width: 10px;
             height: 130px;
             background-color: #555;
             left: calc(50% - 5px);
-            top: 90px;
+            top: 60px;
         }
 
+        /* Base */
         .base {
             position: absolute;
             width: 160px;
             height: 12px;
             background-color: #555;
             left: calc(50% - 80px);
-            top: 215px;
+            top: 185px;
         }
 
+        /* Pratos */
         .prato {
             position: absolute;
             width: 38%;
-            min-height: 90px;
+            min-height: 120px;
             border: 3px solid #555;
             border-radius: 10px;
             background-color: #fafafa;
-            top: 115px;
+            top: 85px;
             padding: 10px;
             box-sizing: border-box;
             text-align: center;
@@ -190,9 +170,10 @@
 
 
         /* =========================================================
-           6. OBJETOS DA EQUAÇÃO
+           5. OBJETOS DA EQUAÇÃO
            ========================================================= */
 
+        /* Caixa que representa x */
         .caixa-x {
             display: inline-block;
             padding: 10px 15px;
@@ -204,6 +185,7 @@
             font-size: 20px;
         }
 
+        /* Unidade positiva */
         .positivo {
             display: inline-block;
             padding: 7px;
@@ -214,6 +196,7 @@
             font-weight: bold;
         }
 
+        /* Unidade negativa */
         .negativo {
             display: inline-block;
             padding: 7px;
@@ -226,12 +209,12 @@
 
 
         /* =========================================================
-           7. CONTROLES
+           6. CONTROLES
            ========================================================= */
 
         .controles {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 5px;
         }
 
         .botoes-lados {
@@ -244,7 +227,7 @@
 
 
         /* =========================================================
-           8. FEEDBACK
+           7. FEEDBACK
            ========================================================= */
 
         #feedback {
@@ -259,7 +242,7 @@
 
 
         /* =========================================================
-           9. AJUSTES PARA CELULAR
+           8. AJUSTES PARA CELULAR
            ========================================================= */
 
         @media (max-width: 600px) {
@@ -281,28 +264,26 @@
             }
 
             /*
-               Reduzimos o espaço inferior da equação.
+               Reduz o espaço abaixo da equação.
             */
             .equacao {
                 font-size: 24px;
                 margin-top: 15px;
-                margin-bottom: 5px;
+                margin-bottom: 0;
             }
 
             /*
-               A balança agora começa quase imediatamente
-               depois da equação.
-
-               Também aumentamos a altura reservada para
-               evitar sobreposição com os controles.
+               Área reservada para a balança.
+               Está menor que na versão anterior,
+               aproximando os controles da balança.
             */
             .balanca {
-                height: 350px;
+                height: 295px;
                 margin-top: 0;
             }
 
             /*
-               Sobe a barra horizontal da balança.
+               Barra horizontal mais próxima da equação.
             */
             #barraBalanca {
                 top: 25px;
@@ -311,7 +292,7 @@
             }
 
             /*
-               Sobe a haste.
+               Haste central.
             */
             .haste {
                 top: 25px;
@@ -319,13 +300,12 @@
             }
 
             /*
-               Sobe os pratos e reserva mais espaço
-               para os objetos.
+               Pratos.
             */
             .prato {
                 top: 50px;
                 width: 42%;
-                min-height: 220px;
+                min-height: 210px;
                 padding: 8px;
                 font-size: 14px;
             }
@@ -339,7 +319,7 @@
             }
 
             /*
-               Reposiciona a base.
+               Base da balança.
             */
             .base {
                 top: 190px;
@@ -363,7 +343,7 @@
             }
 
             /*
-               Melhora os controles para toque.
+               Controles maiores para toque.
             */
             button,
             select,
@@ -372,10 +352,15 @@
                 box-sizing: border-box;
             }
 
+            /*
+               Quase elimina o espaço
+               entre balança e controles.
+            */
             .controles {
-                margin-top: 5px;
+                margin-top: 0;
             }
         }
+
     </style>
 </head>
 
@@ -385,7 +370,10 @@
 <main>
 
     <h1>Missão Equilíbrio</h1>
-    <p class="subtitulo">O Segredo da Incógnita</p>
+
+    <p class="subtitulo">
+        O Segredo da Incógnita
+    </p>
 
 
     <!-- =========================================================
@@ -394,7 +382,9 @@
 
     <section id="telaInicial" class="cartao">
 
-        <h2>Alerta no Núcleo de Equilíbrio</h2>
+        <h2>
+            Alerta no Núcleo de Equilíbrio
+        </h2>
 
         <p>
             Diversas equações ficaram instáveis.
@@ -435,17 +425,14 @@
 
     <section id="telaJogo" class="cartao escondido">
 
-        <div class="barra-externa">
-            <div id="barraProgresso" class="barra-interna"></div>
-        </div>
-
-        <p id="textoProgresso"></p>
-
         <h2 id="tituloDesafio"></h2>
 
         <p id="instrucaoDesafio"></p>
 
+
+        <!-- Equação que muda durante o jogo -->
         <div id="equacaoAtual" class="equacao"></div>
+
 
 
         <!-- =====================================================
@@ -461,6 +448,7 @@
             <div class="base"></div>
 
 
+            <!-- Lado esquerdo -->
             <div id="pratoEsquerdo" class="prato">
 
                 <div class="titulo-prato">
@@ -474,6 +462,7 @@
             </div>
 
 
+            <!-- Lado direito -->
             <div id="pratoDireito" class="prato">
 
                 <div class="titulo-prato">
@@ -547,15 +536,24 @@
 
             <div class="acoes-secundarias">
 
-                <button id="botaoDesfazer" type="button">
+                <button
+                    id="botaoDesfazer"
+                    type="button"
+                >
                     Desfazer
                 </button>
 
-                <button id="botaoPista" type="button">
+                <button
+                    id="botaoPista"
+                    type="button"
+                >
                     Pedir pista
                 </button>
 
-                <button id="botaoReiniciar" type="button">
+                <button
+                    id="botaoReiniciar"
+                    type="button"
+                >
                     Reiniciar desafio
                 </button>
 
@@ -564,6 +562,8 @@
         </div>
 
 
+
+        <!-- Feedback pedagógico -->
         <div
             id="feedback"
             aria-live="polite"
@@ -573,6 +573,8 @@
         </div>
 
 
+
+        <!-- Próximo desafio -->
         <div style="text-align:center; margin-top:20px;">
 
             <button
@@ -595,7 +597,9 @@
 
     <section id="telaFinal" class="cartao escondido">
 
-        <h2>Missão concluída!</h2>
+        <h2>
+            Missão concluída!
+        </h2>
 
         <p>
             Você restaurou todos os setores do
@@ -603,7 +607,9 @@
         </p>
 
         <p>
-            <strong>Regra descoberta:</strong>
+            <strong>
+                Regra descoberta:
+            </strong>
         </p>
 
         <p>
@@ -626,7 +632,7 @@
 <script>
 
     /* =============================================================
-       1. DESAFIOS
+       1. DESAFIOS DA FASE 1
        ============================================================= */
 
     const desafios = [
@@ -658,8 +664,9 @@
     ];
 
 
+
     /* =============================================================
-       2. VARIÁVEIS
+       2. VARIÁVEIS PRINCIPAIS
        ============================================================= */
 
     let indiceDesafio = 0;
@@ -667,8 +674,6 @@
     let codigoAluno = "";
 
     let inicioSessao = 0;
-
-    let inicioDesafio = 0;
 
     let numeroPistas = 0;
 
@@ -681,6 +686,7 @@
     let historico = [];
 
     let registros = [];
+
 
 
     /* =============================================================
@@ -727,8 +733,9 @@
         document.getElementById("pratoDireito");
 
 
+
     /* =============================================================
-       4. INICIAR JOGO
+       4. INICIAR O JOGO
        ============================================================= */
 
     document
@@ -769,6 +776,7 @@
             "INICIO_DA_SESSAO"
         );
 
+
         indiceDesafio = 0;
 
 
@@ -783,6 +791,7 @@
     }
 
 
+
     /* =============================================================
        5. CARREGAR DESAFIO
        ============================================================= */
@@ -793,21 +802,21 @@
             desafios[indiceDesafio];
 
 
+        /*
+           Equação inicial:
+
+           x + a = b
+        */
+
         esquerda = {
-
             x: 1,
-
-            constante:
-                desafio.a
+            constante: desafio.a
         };
 
 
         direita = {
-
             x: 0,
-
-            constante:
-                desafio.b
+            constante: desafio.b
         };
 
 
@@ -816,8 +825,6 @@
         numeroPistas = 0;
 
         resolvido = false;
-
-        inicioDesafio = Date.now();
 
 
         document
@@ -846,8 +853,9 @@
     }
 
 
+
     /* =============================================================
-       6. ESCREVER EXPRESSÃO
+       6. ESCREVER EXPRESSÃO ALGÉBRICA
        ============================================================= */
 
     function escreverExpressao(lado) {
@@ -880,8 +888,9 @@
     }
 
 
+
     /* =============================================================
-       7. SOLUÇÃO DA EQUAÇÃO
+       7. SOLUÇÃO CORRETA DA EQUAÇÃO
        ============================================================= */
 
     function obterSolucao() {
@@ -889,13 +898,25 @@
         const desafio =
             desafios[indiceDesafio];
 
+
+        /*
+           Como:
+
+           x + a = b
+
+           então:
+
+           x = b - a
+        */
+
         return desafio.b -
             desafio.a;
     }
 
 
+
     /* =============================================================
-       8. VALOR DE CADA LADO
+       8. CALCULAR O VALOR DE UM LADO
        ============================================================= */
 
     function valorDoLado(lado) {
@@ -903,9 +924,11 @@
         const x =
             obterSolucao();
 
+
         return lado.x * x +
             lado.constante;
     }
+
 
 
     /* =============================================================
@@ -922,8 +945,9 @@
     }
 
 
+
     /* =============================================================
-       10. VERIFICAR SOLUÇÃO
+       10. VERIFICAR SE O DESAFIO FOI RESOLVIDO
        ============================================================= */
 
     function desafioResolvido() {
@@ -934,6 +958,7 @@
             esquerda.constante === 0
         );
     }
+
 
 
     /* =============================================================
@@ -947,6 +972,10 @@
 
         elementoHTML.innerHTML = "";
 
+
+        /*
+           Caixa x
+        */
 
         if (lado.x === 1) {
 
@@ -964,6 +993,10 @@
             );
         }
 
+
+        /*
+           Unidades numéricas
+        */
 
         const quantidade =
             Math.min(
@@ -1009,6 +1042,11 @@
         }
 
 
+        /*
+           Caso haja mais de 12 unidades,
+           mostramos o total numericamente.
+        */
+
         if (
             Math.abs(
                 lado.constante
@@ -1030,6 +1068,7 @@
     }
 
 
+
     /* =============================================================
        12. ATUALIZAR TELA
        ============================================================= */
@@ -1039,6 +1078,10 @@
         const equilibrio =
             estaEquilibrada();
 
+
+        /*
+           Equação viva.
+        */
 
         equacaoAtual.textContent =
             escreverExpressao(
@@ -1081,9 +1124,8 @@
 
 
         atualizarBalanca();
-
-        atualizarProgresso();
     }
+
 
 
     /* =============================================================
@@ -1112,6 +1154,10 @@
         let angulo =
             diferenca * 2;
 
+
+        /*
+           Limitamos a inclinação.
+        */
 
         if (angulo > 8) {
 
@@ -1150,6 +1196,7 @@
     }
 
 
+
     /* =============================================================
        14. APLICAR OPERAÇÃO
        ============================================================= */
@@ -1182,6 +1229,10 @@
             );
 
 
+        /*
+           Verifica se a quantidade é válida.
+        */
+
         if (
             !Number.isInteger(
                 quantidade
@@ -1198,6 +1249,11 @@
             return;
         }
 
+
+        /*
+           Guarda o estado antes da operação.
+           Isso permite usar Desfazer.
+        */
 
         historico.push({
 
@@ -1231,6 +1287,11 @@
         }
 
 
+        /*
+           Aplica a operação apenas no lado
+           escolhido pelo aluno.
+        */
+
         if (
             ladoEscolhido ===
             "esquerdo"
@@ -1246,6 +1307,10 @@
                 alteracao;
         }
 
+
+        /*
+           Registra a ação.
+        */
 
         registrarEvento(
 
@@ -1267,6 +1332,11 @@
 
         atualizarTela();
 
+
+
+        /* =========================================================
+           FEEDBACK
+           ========================================================= */
 
         if (
             desafioResolvido()
@@ -1300,11 +1370,6 @@
                     "escondido"
                 );
 
-
-            atualizarProgresso(
-                true
-            );
-
         }
         else if (
             estaEquilibrada()
@@ -1325,8 +1390,9 @@
     }
 
 
+
     /* =============================================================
-       15. BOTÕES DE OPERAÇÃO
+       15. BOTÕES DOS LADOS
        ============================================================= */
 
     document
@@ -1357,6 +1423,7 @@
                 );
             }
         );
+
 
 
     /* =============================================================
@@ -1423,6 +1490,7 @@
     }
 
 
+
     /* =============================================================
        17. PISTAS
        ============================================================= */
@@ -1454,6 +1522,10 @@
         );
 
 
+        /*
+           Primeira pista.
+        */
+
         if (
             numeroPistas === 1
         ) {
@@ -1465,6 +1537,10 @@
             return;
         }
 
+
+        /*
+           Segunda pista.
+        */
 
         if (
             esquerda.constante > 0
@@ -1497,6 +1573,10 @@
         }
 
 
+        /*
+           Terceira pista ou posterior.
+        */
+
         if (
             numeroPistas >= 3
         ) {
@@ -1509,8 +1589,9 @@
     }
 
 
+
     /* =============================================================
-       18. REINICIAR
+       18. REINICIAR DESAFIO
        ============================================================= */
 
     document
@@ -1525,6 +1606,7 @@
                     "REINICIO_DO_DESAFIO"
                 );
 
+
                 carregarDesafio();
 
 
@@ -1532,6 +1614,7 @@
                     "Desafio reiniciado.";
             }
         );
+
 
 
     /* =============================================================
@@ -1573,59 +1656,9 @@
     }
 
 
-    /* =============================================================
-       20. PROGRESSO
-       ============================================================= */
-
-    function atualizarProgresso(
-        desafioAcabou = false
-    ) {
-
-        let concluidos =
-            indiceDesafio;
-
-
-        if (
-            desafioAcabou
-        ) {
-
-            concluidos++;
-        }
-
-
-        const percentual =
-            (
-                concluidos /
-                desafios.length
-            )
-            * 100;
-
-
-        document
-            .getElementById(
-                "barraProgresso"
-            )
-            .style
-            .width =
-            percentual +
-            "%";
-
-
-        document
-            .getElementById(
-                "textoProgresso"
-            )
-            .textContent =
-            "Núcleo estabilizado: " +
-            Math.round(
-                percentual
-            ) +
-            "%";
-    }
-
 
     /* =============================================================
-       21. REGISTRO DE EVENTOS
+       20. REGISTRO DE EVENTOS
        ============================================================= */
 
     function registrarEvento(
@@ -1718,8 +1751,9 @@
     }
 
 
+
     /* =============================================================
-       22. FINALIZAR
+       21. FINALIZAR JOGO
        ============================================================= */
 
     function finalizarJogo() {
@@ -1765,8 +1799,9 @@
     }
 
 
+
     /* =============================================================
-       23. BAIXAR CSV
+       22. BAIXAR REGISTROS EM CSV
        ============================================================= */
 
     document
@@ -1819,6 +1854,10 @@
         );
 
 
+        /*
+           Cria o arquivo localmente.
+        */
+
         const arquivo =
             new Blob(
 
@@ -1843,6 +1882,11 @@
                 "a"
             );
 
+
+        /*
+           Garante um nome seguro
+           para o arquivo.
+        */
 
         const codigoSeguro =
             codigoAluno.replace(
